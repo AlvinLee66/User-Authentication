@@ -1,5 +1,6 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
+const bodyParser = require('body-parser')
 const app = express()
 const PORT = 3000
 
@@ -33,15 +34,25 @@ const users = [
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
   res.render('index')
 })
 
 app.post('/', (req, res) => {
-  const body = req.body
-  console.log(body)
-  res.redirect('/')
+  const email = req.body.email
+  const password = req.body.password
+  const checkEmail = users.map(users => users.email).indexOf(email)
+
+  // email 是否存在? 不存在，首頁顯示警告提示；存在返回 true
+  const emailExist = checkEmail === -1 ? res.render('index', { email }) : true
+
+  if (emailExist) { // 如果 email 存在
+    // 確認 password 正不正確 ? 正確，顯示 Welcome back 畫面；不正確，首頁顯示警告提示
+    password === users[checkEmail].password ?
+    res.render('success', { firstName: users[checkEmail].firstName }) : res.render('index', { password, email })
+  }
 })
 
 app.listen(PORT, () => {

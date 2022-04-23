@@ -1,16 +1,32 @@
 <div class="container mt-5">
   <h2 class="d-flex justify-content-center">Account Login</h2>
   <form action="/" method="POST">
+  {{#if password}}
     <div class="row d-flex justify-content-center mt-4 mb-3">
       <div class="col-4">
-        <input type="email" class="form-control" placeholder="Email: name@example.com" name="account" id="account">
+        <input type="email" class="form-control" placeholder="Email: name@example.com" name="email" id="email" value="{{ email }}" required>
       </div>
     </div>
     <div class="row d-flex justify-content-center mt-4 mb-3">
       <div class="col-4">
-        <input type="password" class="form-control" placeholder="Password" name="password" id="password">
+        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+        <small style="color: red; font-size: x-small;">請確認輸入的 password 是否正確！</small>
       </div>
     </div>
+  {{else}}
+    <div class="row d-flex justify-content-center mt-4 mb-3">
+      <div class="col-4">
+        <input type="email" class="form-control" placeholder="Email: name@example.com" name="email" id="email"
+        {{#if email}}value="{{ email }}"{{/if}} required>
+        {{#if email}}<small style="color: red; font-size: x-small;">請確認輸入的 email 是否正確！</small>{{/if}}
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center mt-4 mb-3">
+      <div class="col-4">
+        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+      </div>
+    </div>
+  {{/if}}
     <div class="d-flex justify-content-center">
       <button type="submit" class="btn btn-outline-secondary">Sign in</button>
     </div>
